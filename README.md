@@ -1,6 +1,6 @@
 # lib_savevars
 
-Library of writing of variables .
+Library to save variables per others mods in file ````variables.tbl````.
 
 **Dependencies:**
   There are no dependencies
