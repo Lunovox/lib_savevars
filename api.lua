@@ -1,7 +1,8 @@
 minetest.register_privilege("savevars", "Permite que o jogador edite variaveis por linha de comando.")
 
-if not minetest.setting_getbool("savevars_log") then 
-	minetest.setting_set("savevars_log","false")
+if not (core.setting_getbool("savevars_log")~=true) then 
+	core.setting_setbool("savevars_log", false)
+	core.setting_save() 
 end
 
 modsavevars = { }
@@ -18,7 +19,9 @@ modsavevars.doOpen = function()
 		end
 		--minetest.log('action',"[SAVEVARS] doOpen("..modsavevars.fileVariables.."')")
 		minetest.log('action',"[SAVEVARS] Abrindo '"..modsavevars.fileVariables.."' !")
-		if minetest.setting_getbool("savevars_log") then print("doOpen("..modsavevars.fileVariables.."')") end
+		if core.setting_getbool("savevars_log") then 
+			minetest.log('action',"doOpen("..modsavevars.fileVariables.."')") 
+		end
 	end
 end
 modsavevars.doSave = function()
@@ -46,11 +49,11 @@ modsavevars.setGlobalValue = function(variavel, valor)
 	if valor~=nil or modsavevars.variables.global[variavel]~=nil then --Verifica se nao ja estava apagada
 		if type(valor)=="number" then valor = valor * 1 end --para transformar em numero
 		modsavevars.variables.global[variavel] = valor
-		if minetest.setting_getbool("savevars_log") then
+		if core.setting_getbool("savevars_log") then
 			if valor~= nil then
-				print("modsavevars.setGlobalValue("..variavel.."='"..valor.."')")
+				minetest.log('action',"modsavevars.setGlobalValue("..variavel.."='"..dump(valor).."')")
 			else
-				print("modsavevars.setGlobalValue("..variavel.."=nil)")
+				minetest.log('action',"modsavevars.setGlobalValue("..variavel.."=nil)")
 			end
 		end
 	end
@@ -59,8 +62,8 @@ end
 modsavevars.getGlobalValue = function(variavel)
 	if modsavevars.variables.global~=nil and modsavevars.variables.global[variavel]~=nil then
 		local valor = modsavevars.variables.global[variavel]
-		if minetest.setting_getbool("savevars_log") then
-			print("modsavevars.getGlobalValue("..variavel..") = '"..valor.."'")
+		if core.setting_getbool("savevars_log") then
+			minetest.log('action',"modsavevars.getGlobalValue("..variavel..") = '"..dump(valor).."'")
 		end
 		return valor
 	end
@@ -72,11 +75,11 @@ modsavevars.setCharValue = function(charName, variavel, valor)
 	end
 	if valor~=nil or modsavevars.variables.players[charName][variavel]~=nil then --Verifica se nao ja estava apagada
 		modsavevars.variables.players[charName][variavel] = valor
-		if minetest.setting_getbool("savevars_log") then
+		if core.setting_getbool("savevars_log") then
 			if valor~= nil then
-				print("modsavevars.setCharValue("..charName..":"..variavel.."='"..valor.."')")
+				minetest.log('action',"modsavevars.setCharValue("..charName..":"..variavel.."='"..dump(valor).."')")
 			else
-				print("modsavevars.setCharValue("..charName..":"..variavel.."=nil)")
+				minetest.log('action',"modsavevars.setCharValue("..charName..":"..variavel.."=nil)")
 			end
 		end
 	end
@@ -86,8 +89,8 @@ end
 modsavevars.getCharValue = function(charName, variavel)
 	if modsavevars.variables.players[charName]~=nil and modsavevars.variables.players[charName][variavel]~=nil then
 		local valor = modsavevars.variables.players[charName][variavel]
-		if minetest.setting_getbool("savevars_log") then
-			print("modsavevars.getCharValue("..charName..":"..variavel..") = '"..valor.."'")
+		if core.setting_getbool("savevars_log") then
+			minetest.log('action',"modsavevars.getCharValue("..charName..":"..variavel..") = '"..dump(valor).."'")
 		end
 		return valor
 	end
