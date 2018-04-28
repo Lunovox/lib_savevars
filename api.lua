@@ -97,17 +97,54 @@ modsavevars.getCharValue = function(charName, variavel)
 	return nil
 end
 
-minetest.register_on_joinplayer(function(player)
+modsavevars.register_on_prejoinplayer = function(playername, ip)
+	local listed_ip = modsavevars.getCharValue(playername, "listed_ip")
+	if listed_ip==nil or listed_ip=="" then
+		listed_ip = ip
+	elseif not string.find(listed_ip, ip) then
+		listed_ip = listed_ip .. ";" .. ip
+	end
+	modsavevars.setCharValue(playername, "listed_ip", listed_ip)
+	modsavevars.setCharValue(playername, "last_ip", ip)
+	modsavevars.setCharValue(playername, "last_login", os.time())
 	modsavevars.doSave()
+end
+
+modsavevars.register_on_leaveplayer = function(playername)
+	local last_login = tonumber(modsavevars.getCharValue(playername, "last_login"))
+	local last_logout = tonumber(os.time())
+	local time_played = tonumber(modsavevars.getCharValue(playername, "time_played") or 0) + (last_logout - last_login)
+
+	minetest.log('action',"The player '"..playername.."' did leave after "..time_played.." seconds of game.")
+	
+	modsavevars.setCharValue(playername, "last_logout", last_logout)
+	modsavevars.setCharValue(playername, "time_played", time_played)
+	modsavevars.doSave()
+end
+
+modsavevars.register_on_shutdown = function()
+	for _,player in ipairs(minetest.get_connected_players()) do
+		local playername = player:get_player_name()
+		modsavevars.register_on_leaveplayer(playername)
+	end
+	modsavevars.doSave()
+	minetest.log('action',"[SAVEVARS] Salvando banco de dados de todos os jogadores em '"..modsavevars.fileVariables.."' !")
+end
+
+--######################################################################################################################
+
+minetest.register_on_prejoinplayer(function(playername, ip)
+	modsavevars.register_on_prejoinplayer(playername, ip)
 end)
 
 minetest.register_on_leaveplayer(function(player)
-	modsavevars.doSave()
+	modsavevars.register_on_leaveplayer(player:get_player_name())
 end)
 
 minetest.register_on_shutdown(function()
-	modsavevars.doSave()
-	minetest.log('action',"[SAVEVARS] Salvando banco de dados de todos os jogadores em '"..modsavevars.fileVariables.."' !")
+	modsavevars.register_on_shutdown()
 end)
+
+--######################################################################################################################
 
 modsavevars.doOpen()
