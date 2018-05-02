@@ -9,4 +9,4 @@
  * [GNU AGPL v3.0](https://github.com/Lunovox/lib_savevars/blob/master/LICENSE)
 
 **Developers:**
- * [Lunovox](https://github.com/Lunovox/lib_savevars/blob/master/LICENSE)
+ * [Lunovox Heavenfinder](https://libreplanet.org/wiki/User:Lunovox)
