@@ -1,12 +1,12 @@
 # lib_savevars
 
-Library to save variables per others mods in file ````variables.tbl````.
+[Minetest Mod] Registers in file ````variables.tbl```` on LuaScript language the global variables and character variables that can be queried by other mods and by server administrator commands.
 
 **Dependencies:**
-  There are no dependencies
+ * ---- There are no dependencies ----
 
 **Licence:**
- * GNU AGPL: https://pt.wikipedia.org/wiki/GNU_Affero_General_Public_License
+ * [GNU AGPL v3.0](https://github.com/Lunovox/lib_savevars/blob/master/LICENSE)
 
 **Developers:**
- * [Lunovox](mailto:lunovox@openmailbox.org)
+ * [Lunovox](https://github.com/Lunovox/lib_savevars/blob/master/LICENSE)
