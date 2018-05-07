@@ -1,4 +1,7 @@
-minetest.register_privilege("savevars", "Permite que o jogador edite variaveis por linha de comando.")
+minetest.register_privilege("savevars",  {
+	description="Permite que o jogador edite variaveis por linha de comando.", 
+	give_to_singleplayer=false,
+})
 
 if not (core.setting_getbool("savevars_log")~=true) then 
 	core.setting_setbool("savevars_log", false)
