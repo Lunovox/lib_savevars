@@ -126,10 +126,13 @@ modsavevars.register_on_leaveplayer = function(playername)
 end
 
 modsavevars.register_on_shutdown = function()
-	for _,player in ipairs(minetest.get_connected_players()) do
+	local players_online = minetest.get_connected_players()
+if players_online ~= nil then
+for _,player in ipairs(players_online) do
 		local playername = player:get_player_name()
 		modsavevars.register_on_leaveplayer(playername)
 	end
+end
 	modsavevars.doSave()
 	minetest.log('action',"[SAVEVARS] Salvando banco de dados de todos os jogadores em '"..modsavevars.fileVariables.."' !")
 end
